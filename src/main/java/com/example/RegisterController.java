@@ -1,14 +1,14 @@
-package com.example.controller;
+package com.example;
 
-import com.example.entity.RegisterEntity;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.example.model.RegisterRequest;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.serviceImpl.RegisterUserServiceImpl;
 
 @RestController
-@Slf4j
+@NoArgsConstructor
+@Controller
 public class RegisterController  {
 
     private RegisterUserServiceImpl registerService;

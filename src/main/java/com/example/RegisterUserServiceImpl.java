@@ -1,11 +1,11 @@
-package com.example.serviceImpl;
+package com.example;
 
-import com.example.entity.RegisterEntity;
+import com.example.RegisterEntity;
 import lombok.extern.slf4j.Slf4j;
-import com.example.model.RegisterRequest;
+import com.example.RegisterRequest;
 import org.springframework.stereotype.Service;
-import com.example.repository.RegisterRepository;
-import com.example.service.RegisterService;
+import com.example.RegisterRepository;
+import com.example.RegisterService;
 
 @Service
 @Slf4j
