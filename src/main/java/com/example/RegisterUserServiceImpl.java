@@ -1,29 +1,43 @@
 package com.example;
 
-import com.example.RegisterEntity;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.example.RegisterRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import com.example.RegisterRepository;
-import com.example.RegisterService;
+
+import java.util.Objects;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class RegisterUserServiceImpl implements RegisterService {
-
     private RegisterRepository registerRepository;
 
     @Override
-    public RegisterEntity registerUser(RegisterRequest registerRequest) {
+    public RegisterResponse registerUser(RegisterRequest registerRequest) {
 
-        RegisterEntity registerEntity = new RegisterEntity();
-        registerEntity.setCustomerName(registerRequest.getCustomerName());
-        registerEntity.setLastName(registerRequest.getLastName());
-        registerEntity.setEmailAddress(registerRequest.getEmailAddress());
-        registerEntity.setPhoneNumber(registerRequest.getPhoneNumbers());
-           var response = registerRepository.save(registerEntity);
+        var validatePhoneNumbers = registerRequest.getPhoneNumber();
+        try {
 
-        return response;
-        // }
+                RegisterEntity registerEntity = new RegisterEntity();
+                registerEntity.setUsername(registerRequest.getCustomerName());
+                registerEntity.setLastName(registerRequest.getLastName());
+                registerEntity.setEmailAddress(registerRequest.getEmailAddress());
+                registerEntity.setPhoneNumber(registerRequest.getPhoneNumber());
+                registerEntity.setPassword(registerRequest.getPassword());
+            if (validatePhoneNumbers.length() == 10) {
+              var savedUser=  registerRepository.save(registerEntity);
+                log.info("Profile was created successfully:{}",savedUser.getUsername());
+            }else{
+                throw new PhoneNumberException("Phone numbers must be 10 digits");
+            }
+
+        } catch (Exception e) {
+            throw new PhoneNumberException("Phone numbers must be 10 digits");
+        }
+        return RegisterResponse.builder()
+                .message("User registered successfully")
+                .statusCode(HttpStatus.CREATED.value())
+                .success(true).build();
     }
 }

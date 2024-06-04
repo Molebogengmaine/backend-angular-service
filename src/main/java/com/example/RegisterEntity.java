@@ -1,9 +1,6 @@
 package com.example;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,12 +13,17 @@ import lombok.Setter;
 public class RegisterEntity {
 
     @Id
-    @Column(name = "phoneNumber")
-    private  int phoneNumber;
-    @Column(name = "customerName")//mapping a specific column
-    private  String customerName;
-    @Column(name = "lastName")
+    @Column(name="id")
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    @Column(name = "phonenumber")
+    private  String phoneNumber;
+    @Column(name = "username")//mapping a specific column
+    private  String username;
+    @Column(name = "lastname")
     private  String lastName;
-    @Column(name = "emailAddress")
+    @Column(name = "emailaddress")
     private  String emailAddress;
+    @Column(name = "password")
+    private  String password;
 }
