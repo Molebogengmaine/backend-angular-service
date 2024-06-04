@@ -5,7 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -18,22 +21,38 @@ public class RegisterUserServiceImpl implements RegisterService {
 
         var validatePhoneNumbers = registerRequest.getPhoneNumber();
         try {
+         //   Optional<RegisterEntity> emailExist = registerRepository.findByEmailAddress(registerRequest.getEmailAddress());
+         //   if (emailExist.isEmpty()){
+              //  log.info("Profile was created successfully:{}",savedUser.getUsername());
+       //     }
+      //      else {
+      //          throw  new EmailAddressExistException("A user with this email address already exist");
+     //       }
 
-                RegisterEntity registerEntity = new RegisterEntity();
-                registerEntity.setUsername(registerRequest.getCustomerName());
-                registerEntity.setLastName(registerRequest.getLastName());
-                registerEntity.setEmailAddress(registerRequest.getEmailAddress());
-                registerEntity.setPhoneNumber(registerRequest.getPhoneNumber());
-                registerEntity.setPassword(registerRequest.getPassword());
+            LocalDateTime datetime1 = LocalDateTime.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            String formatDateTime = datetime1.format(format);
             if (validatePhoneNumbers.length() == 10) {
-              var savedUser=  registerRepository.save(registerEntity);
-                log.info("Profile was created successfully:{}",savedUser.getUsername());
+                Optional<RegisterEntity> emailExist = registerRepository.findByEmailAddress(registerRequest.getEmailAddress());
+                if (emailExist.isEmpty()) {
+                    RegisterEntity registerEntity = new RegisterEntity();
+                    registerEntity.setUsername(registerRequest.getCustomerName());
+                    registerEntity.setLastName(registerRequest.getLastName());
+                    registerEntity.setEmailAddress(registerRequest.getEmailAddress());
+                    registerEntity.setPhoneNumber(registerRequest.getPhoneNumber());
+                    registerEntity.setPassword(registerRequest.getPassword());
+                    registerEntity.setCreatedDate(formatDateTime);
+
+                    var savedUser = registerRepository.save(registerEntity);
+                    log.info("Registered successfully:{}", savedUser.getUsername());
+                }else{
+                    throw  new EmailAddressExistException("A user with this email address already exist");
+                }
             }else{
                 throw new PhoneNumberException("Phone numbers must be 10 digits");
             }
-
         } catch (Exception e) {
-            throw new PhoneNumberException("Phone numbers must be 10 digits");
+            throw  new FailedToSaveUserException("Failed to register user successfully");
         }
         return RegisterResponse.builder()
                 .message("User registered successfully")

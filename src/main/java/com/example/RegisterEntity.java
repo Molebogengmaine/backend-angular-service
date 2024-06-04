@@ -26,4 +26,6 @@ public class RegisterEntity {
     private  String emailAddress;
     @Column(name = "password")
     private  String password;
+    @Column(name = "created_at")
+    private  String createdDate;
 }

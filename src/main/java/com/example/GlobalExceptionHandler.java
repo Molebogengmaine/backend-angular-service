@@ -26,15 +26,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
 
- /*   @ExceptionHandler({PrintForexReceiptBadRequestException.class})
+   @ExceptionHandler({EmailAddressExistException.class})
     public ResponseEntity<Object> handleIllegalState(Exception e, WebRequest req) throws URISyntaxException {
         log.info("Bad request*****", e.getMessage(), e);
         return reply(e, (ServletWebRequest) req, 400, "");
-    }*/
+    }
 
     @ExceptionHandler({PhoneNumberException.class})
     public ResponseEntity<Object> handleFailedPrint(Exception e, WebRequest req) throws URISyntaxException {
-        log.info("Phone number is greater than 10: {}", e.getMessage(), e);
+        //log.info("Phone number is greater than 10: {}", e.getMessage(), e);
         return reply(e, (ServletWebRequest) req, 400, "");
+    }
+
+    @ExceptionHandler({FailedToSaveUserException.class})
+    public ResponseEntity<Object> failedtoSave(Exception e, WebRequest req) throws URISyntaxException {
+        //log.info("Phone number is greater than 10: {}", e.getMessage(), e);
+        return reply(e, (ServletWebRequest) req, 500, "");
     }
 }
