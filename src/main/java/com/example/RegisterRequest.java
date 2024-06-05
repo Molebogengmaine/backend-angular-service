@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class RegisterRequest implements  Serializable {
 
     @NotBlank
-    @Max(10)
+   // @Max(10)
     private String phoneNumber;
     @NotBlank
     private String customerName;
