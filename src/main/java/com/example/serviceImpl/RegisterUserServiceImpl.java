@@ -1,5 +1,14 @@
-package com.example;
+package com.example.serviceImpl;
 
+import com.example.dtos.LoginRequest;
+import com.example.dtos.RegisterRequest;
+import com.example.dtos.RegisterResponse;
+import com.example.enity.RegisterEntity;
+import com.example.exception.EmailAddressExistException;
+import com.example.exception.FailedToSaveUserException;
+import com.example.exception.PhoneNumberException;
+import com.example.repository.RegisterRepository;
+import com.example.service.RegisterService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,7 +47,7 @@ public class RegisterUserServiceImpl implements RegisterService {
             registerEntity.setPassword(registerRequest.getPassword());
             registerEntity.setCreatedDate(formatDateTime);
             var savedUser = registerRepository.save(registerEntity);
-            log.info("{} Registered successfully:",savedUser.getUsername());
+            log.info("{} Registered successfully:", savedUser.getUsername());
 
         } catch (FailedToSaveUserException e) {
             throw new FailedToSaveUserException("Failed to register user successfully");
@@ -50,5 +59,25 @@ public class RegisterUserServiceImpl implements RegisterService {
                 .message("User registered successfully")
                 .statusCode(HttpStatus.CREATED.value())
                 .success(true).build();
+    }
+
+    @Override
+    public RegisterResponse loginUser(LoginRequest loginRequest) {
+        try {
+            Optional<RegisterEntity> loggedInUser = registerRepository.findByEmailAddress(loginRequest.getEmailAddress());
+            if (loggedInUser.isPresent()) {
+                var currentLoggedInUser = loggedInUser.get();
+                log.info("Logged in {} session:", currentLoggedInUser.getEmailAddress());
+            }else {
+                throw  new EmailAddressExistException("Username does not exist please sign up");
+            }
+
+            return RegisterResponse.builder()
+                    .message("User Logged in successfully")
+                    .statusCode(HttpStatus.OK.value())
+                    .success(true).build();
+        } catch (EmailAddressExistException e) {
+            throw  new EmailAddressExistException("Username does not exist please sign up");
+        }
     }
 }
