@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,14 +20,6 @@ public class RegisterUserServiceImpl implements RegisterService {
 
         var validatePhoneNumbers = registerRequest.getPhoneNumber();
         try {
-         //   Optional<RegisterEntity> emailExist = registerRepository.findByEmailAddress(registerRequest.getEmailAddress());
-         //   if (emailExist.isEmpty()){
-              //  log.info("Profile was created successfully:{}",savedUser.getUsername());
-       //     }
-      //      else {
-      //          throw  new EmailAddressExistException("A user with this email address already exist");
-     //       }
-
             LocalDateTime datetime1 = LocalDateTime.now();
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
             String formatDateTime = datetime1.format(format);

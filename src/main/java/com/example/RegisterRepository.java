@@ -10,7 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface RegisterRepository extends JpaRepository<RegisterEntity,Long > {
-   // @Query(nativeQuery = true, value = "SELECT emailaddress FROM register");
-
     Optional<RegisterEntity> findByEmailAddress(String  emailAddress);
 }
