@@ -26,7 +26,7 @@ public class RegisterUserServiceImpl implements RegisterService {
 
     @Override
     public RegisterResponse registerUser(RegisterRequest registerRequest) {
-
+  //TODO write unit test
         var validatePhoneNumbers = registerRequest.getPhoneNumber();
         try {
             LocalDateTime datetime1 = LocalDateTime.now();
