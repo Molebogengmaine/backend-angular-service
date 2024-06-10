@@ -35,8 +35,8 @@ public class RegisterUserServiceImpl implements RegisterService {
             if (validatePhoneNumbers.length() != 10) {
                 throw new PhoneNumberException("Phone numbers must be 10 digits");
             }
-            Optional<RegisterEntity> emailExist = registerRepository.findByEmailAddress(registerRequest.getEmailAddress());
-            if (emailExist.isPresent()) {
+            Optional<RegisterEntity> userEmail = registerRepository.findByEmailAddress(registerRequest.getEmailAddress());
+            if (userEmail.isPresent()) {
                 throw new EmailAddressExistException("A user with this email address already exist");
             }
             RegisterEntity registerEntity = new RegisterEntity();

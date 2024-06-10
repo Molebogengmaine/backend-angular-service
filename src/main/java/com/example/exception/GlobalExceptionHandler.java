@@ -19,14 +19,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         var problem = RegisterResponse.builder().statusCode(statusCode).message(reason + " " + e.getMessage()).success(false).build();
         return ResponseEntity.status(statusCode).body(problem);
     }
-
-    private static ResponseEntity<Object> replyNoContent(Exception e, ServletWebRequest req, int statusCode, String reason) throws URISyntaxException {
-        var problem = RegisterResponse.builder().statusCode(statusCode).message(reason + " " + e.getMessage()).success(false).build();
-        return ResponseEntity.status(200).body(problem);
-    }
-
-
-
    @ExceptionHandler({EmailAddressExistException.class})
     public ResponseEntity<Object> emailAlreadyExist(Exception e, WebRequest req) throws URISyntaxException {
         log.info("email already exist:{}", e.getMessage(), e);
